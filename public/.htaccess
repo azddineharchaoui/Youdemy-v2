@@ -1,7 +1,7 @@
 Options -MultiViews
 RewriteEngine On 
 
-RewriteBase /YoudemyMVC/public
+RewriteBase /Youdemy-v2/public
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f

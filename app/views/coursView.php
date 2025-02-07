@@ -1,36 +1,12 @@
 <?php
 session_start();
-require_once("Classes/Cours.php");
-require_once("Classes/Cours_text.php");
-require_once("Classes/Cours_video.php");
+// require_once("Classes/Cours.php");
+// require_once("Classes/Cours_text.php");
+// require_once("Classes/Cours_video.php");
 
-if (!isset($_GET['id']) || empty($_GET['id'])) {
-    header('Location: index.php');
-    exit();
-}
 
-$id_cours = (int)$_GET['id'];
-$pdo = DatabaseConnection::getInstance()->getConnection();
 
-// Récupérer les détails du cours
-$sql = "SELECT c.*, u.nom as enseignant_nom, u.prenom as enseignant_prenom, cat.nom as categorie_nom, 
-               GROUP_CONCAT(t.nom SEPARATOR ', ') as tags 
-        FROM courses c 
-        JOIN utilisateurs u ON c.enseignant_id = u.id_utilisateur 
-        LEFT JOIN categories cat ON c.categorie_id = cat.id_categorie
-        LEFT JOIN course_tags ct ON c.id_course = ct.course_id
-        LEFT JOIN tags t ON ct.tag_id = t.id_tag
-        WHERE c.id_course = :id
-        GROUP BY c.id_course";
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id', $id_cours);
-$stmt->execute();
-$cours = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$cours) {
-    header('Location: index.php');
-    exit();
-}
+$cours = $data[0]['cours'];
 
 ?>
 
@@ -57,9 +33,9 @@ if (!$cours) {
                 </svg>
             </button>
             <ul id="navLinks" class="hidden md:flex space-x-6 text-gray-700">
-                <li><a href="#home" class="hover:text-blue-500">Accueil</a></li>
-                <li><a href="allcours.php" class="hover:text-blue-500">Cours</a></li>
-                <li><a href="mescours.php" class="hover:text-blue-500">Mes Cours</a></li>
+                <li><a href="../home/index" class="hover:text-blue-500">Accueil</a></li>
+                <li><a href="../allcours" class="hover:text-blue-500">Cours</a></li>
+                <li><a href="../mesCours" class="hover:text-blue-500">Mes Cours</a></li>
             </ul>
             <div class="hidden md:flex space-x-4">
                 <?php 
@@ -90,9 +66,9 @@ if (!$cours) {
         </nav>
         <div id="mobileMenu" class="hidden bg-white shadow-md">
             <ul class="flex flex-col space-y-2 py-4 px-6 text-gray-700">
-                <li><a href="index.php" class="hover:text-blue-500">Accueil</a></li>
-                <li><a href="allcours.php" class="hover:text-blue-500">Cours</a></li>
-                <li><a href="mescours.php" class="hover:text-blue-500">Mes Cours</a></li>
+                <li><a href="../home/index" class="hover:text-blue-500">Accueil</a></li>
+                <li><a href="../allcours" class="hover:text-blue-500">Cours</a></li>
+                <li><a href="../mesCours" class="hover:text-blue-500">Mes Cours</a></li>
             </ul>
             <?php 
     if(!isset($_SESSION['user_id'])){
@@ -178,7 +154,7 @@ if (!$cours) {
                 <?php endif; ?>
 
                 <?php if (isset($_SESSION['user_id']) && $_SESSION['role_id'] == 3): ?>
-                <form action="inscription_cours.php" method="POST" class="mt-4">
+                <form action="../inscrire" method="POST" class="mt-4">
                     <input type="hidden" name="course_id" value="<?php echo $cours['id_course']; ?>">
                     <button type="submit"
                         class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">

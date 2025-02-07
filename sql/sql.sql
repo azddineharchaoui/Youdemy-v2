@@ -8,13 +8,13 @@ CREATE TYPE course_type AS ENUM ('video', 'text');
 
 -- Table: roles
 CREATE TABLE roles (
-    id_role INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_role INT SERIAL PRIMARY KEY,
     nom role_nom NOT NULL
 );
 
 -- Table: utilisateurs
 CREATE TABLE utilisateurs (
-    id_utilisateur INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_utilisateur INT SERIAL PRIMARY KEY,
     nom VARCHAR(255) NOT NULL,
     prenom VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -27,7 +27,7 @@ CREATE TABLE utilisateurs (
 
 -- Table: categories
 CREATE TABLE categories (
-    id_categorie INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_categorie INT SERIAL PRIMARY KEY,
     nom VARCHAR(255) NOT NULL UNIQUE,
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -35,13 +35,13 @@ CREATE TABLE categories (
 
 -- Table: tags
 CREATE TABLE tags (
-    id_tag INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_tag INT SERIAL PRIMARY KEY,
     nom VARCHAR(255) NOT NULL UNIQUE
 );
 
 -- Table: courses
 CREATE TABLE courses (
-    id_course INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_course INT SERIAL PRIMARY KEY,
     titre VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     image_url VARCHAR(100),

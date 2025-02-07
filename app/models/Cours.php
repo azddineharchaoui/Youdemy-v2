@@ -1,5 +1,5 @@
 <?php 
-    require_once("db.php");
+    // require_once("db.php");
 
     abstract class Cours {
         protected $idCours;
@@ -271,6 +271,28 @@ public function listerTousCours($limit = null, $offset = null) {
             } catch (PDOException $e) {
                 return [];
             }
+        }
+        public static function getMesCours(){
+            $pdo = DatabaseConnection::getInstance()->getConnection();
+
+            // Récupérer les détails du cours
+            $sql = "SELECT c.*, 
+                    u.nom AS enseignant_nom, 
+                    u.prenom AS enseignant_prenom, 
+                    cat.nom AS categorie_nom, 
+                    STRING_AGG(t.nom, ', ') AS tags
+                    FROM courses c
+                    JOIN utilisateurs u ON c.enseignant_id = u.id_utilisateur
+                    LEFT JOIN categories cat ON c.categorie_id = cat.id_categorie
+                    LEFT JOIN course_tags ct ON c.id_course = ct.course_id
+                    LEFT JOIN tags t ON ct.tag_id = t.id_tag
+                    WHERE c.id_course = :id
+                    GROUP BY c.id_course, u.nom, u.prenom, cat.nom";
+            // $sql = "SELECT * from courses where id_course = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':id', $idCours);
+            $stmt->execute();
+            return  $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
 ?>

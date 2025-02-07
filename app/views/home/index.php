@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 if (isset($_SESSION['error'])) {
     echo "<script>alert('" . $_SESSION['error'] . "');</script>";
     unset($_SESSION['error']);
@@ -28,13 +28,13 @@ if (isset($_SESSION['error'])) {
             </button>
             <ul id="navLinks" class="hidden md:flex space-x-6 text-gray-700">
                 <li><a href="#home" class="hover:text-blue-500">Accueil</a></li>
-                <li><a href="allcours.php" class="hover:text-blue-500">Cours</a></li>
+                <li><a href="UserController/allCours" class="hover:text-blue-500">Cours</a></li>
                 <li><a href="#about" class="hover:text-blue-500">À propos</a></li>
                 <li><a href="#notre-public-cible" class="hover:text-blue-500">Notre Public</a></li>
             </ul>
             <div class="hidden md:flex space-x-4">
             <?php 
-    if(!isset($_SESSION['user_id'])){
+                if(!isset($_SESSION['user_id'])){
             ?>
             <button id="openLogin" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                 Connexion
@@ -42,26 +42,26 @@ if (isset($_SESSION['error'])) {
             <button id="openRegister" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
                 Inscription
             </button>
-            <!-- <?php }else { 
+            <?php }else { 
         
             ?>
             <div class="flex justify-end">
                 <span><?php if(isset($_SESSION['user_name'])){echo $_SESSION['user_name'];}?></span>
-                <form action="home/logout" method="POST">
+                <form action="logout" method="POST">
                     <button type="submit" name="submit"
                         class="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
                         Déconnexion
                     </button>
                 </form>            </div>
             <?php }
-            ?> -->
+            ?>
             </div>
            
         </nav>
         <div id="mobileMenu" class="hidden bg-white shadow-md">
             <ul class="flex flex-col space-y-2 py-4 px-6 text-gray-700">
-                <li><a href="index.php" class="hover:text-blue-500">Accueil</a></li>
-                <li><a href="allcours.php" class="hover:text-blue-500">Cours</a></li>
+                <li><a href="index" class="hover:text-blue-500">Accueil</a></li>
+                <li><a href="../CoursController/allcours" class="hover:text-blue-500">Cours</a></li>
                 <li><a href="#about" class="hover:text-blue-500">À propos</a></li>
                 <li><a href="#notre-public-cible" class="hover:text-blue-500">Notre Public</a></li>
             </ul>
@@ -79,7 +79,7 @@ if (isset($_SESSION['error'])) {
             ?>
             <div class="flex justify-center">
                 <span><?php if(isset($_SESSION['user_name'])){echo $_SESSION['user_name'];}?></span>
-                <form action="logout.php" method="POST">
+                <form action="logout" method="POST">
                     <button type="submit" name="submit"
                         class="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
                         Déconnexion
@@ -122,7 +122,7 @@ if (isset($_SESSION['error'])) {
                 ✕
             </button>
             <h2 class="text-3xl font-extrabold text-blue-600 mb-6 text-center">Connexion</h2>
-            <form Action="login.php" method="POST">
+            <form Action="login" method="POST">
                 <div class="mb-6">
                     <label class="block text-gray-700 font-medium mb-2">Adresse Email</label>
                     <input type="email" name="email" placeholder="Entrez votre email"
@@ -153,7 +153,7 @@ if (isset($_SESSION['error'])) {
                 ✕
             </button>
             <h2 class="text-3xl font-extrabold text-green-600 mb-6 text-center">Inscription</h2>
-            <form Action="register.php" method="POST">
+            <form Action="register" method="POST">
                 <div class="mb-6">
                     <label class="block text-gray-700 font-medium mb-2">Nom </label>
                     <input type="text" name="nom" placeholder="Entrez votre nom"

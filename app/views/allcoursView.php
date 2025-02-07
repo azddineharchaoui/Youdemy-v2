@@ -1,28 +1,18 @@
 <?php
 session_start();
-require_once("Classes/Cours.php");
-require_once("Classes/Cours_text.php");
-require_once("Classes/Cours_video.php");
+// require_once("Classes/Cours.php");
+// require_once("Classes/Cours_text.php");
+// require_once("Classes/Cours_video.php");
 $notVisiteur = isset($_SESSION['user_id']);
+// print_r($data);
+$coursesPerPage = $data[0]['coursesPerPage']; 
+$page = $data[0]['page'];
+$offset = $data[0]['offset']; 
 
-$coursesPerPage = 6; 
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
-$offset = ($page - 1) * $coursesPerPage; 
+$courses = $data[0]['courses'];
+$totalCourses = $data[0]['totalCourses'];
 
-$courseObj = new Cours_text(null, "", "", "", "", "");
-
-$courses = [];
-$totalCourses = 0;
-
-if (isset($_GET['search']) && !empty($_GET['search'])) {
-    $courses = $courseObj->rechercherCours($_GET['search'], $coursesPerPage, $offset);
-    $totalCourses = $courseObj->countCoursBySearch($_GET['search']);
-} else {
-    $courses = $courseObj->listerTousCours($coursesPerPage, $offset);
-    $totalCourses = $courseObj->countAllCours();
-}
-
-$totalPages = ceil($totalCourses / $coursesPerPage); // Calcul du nombre total de pages
+$totalPages = $data[0]['totalPages'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,12 +36,12 @@ $totalPages = ceil($totalCourses / $coursesPerPage); // Calcul du nombre total d
                 </svg>
             </button>
             <ul id="navLinks" class="hidden md:flex space-x-6 text-gray-700">
-                <li><a href="index.php" class="hover:text-blue-500">Accueil</a></li>
-                <li><a href="allcours.php" class="hover:text-blue-500">Cours</a></li>
+                <li><a href="../home/index" class="hover:text-blue-500">Accueil</a></li>
+                <li><a href="#" class="hover:text-blue-500">Cours</a></li>
                 <?php
                 if(isset($_SESSION['user_id'])){
             ?>
-                <li><a href="mescours.php" class="hover:text-blue-500">Mes Cours</a></li>
+                <li><a href="mesCours" class="hover:text-blue-500">Mes Cours</a></li>
                 <?php } ?>
             </ul>
             <div class="hidden md:flex space-x-4">
@@ -69,7 +59,7 @@ $totalPages = ceil($totalCourses / $coursesPerPage); // Calcul du nombre total d
             ?>
                 <div class="flex justify-end">
                     <span><?php if(isset($_SESSION['user_name'])){echo $_SESSION['user_name'];}?></span>
-                    <form action="logout.php" method="POST">
+                    <form action="../home/logout" method="POST">
                         <button type="submit" name="submit"
                             class="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
                             Déconnexion
@@ -83,12 +73,12 @@ $totalPages = ceil($totalCourses / $coursesPerPage); // Calcul du nombre total d
         </nav>
         <div id="mobileMenu" class="hidden bg-white shadow-md">
             <ul class="flex flex-col space-y-2 py-4 px-6 text-gray-700">
-                <li><a href="index.php" class="hover:text-blue-500">Accueil</a></li>
-                <li><a href="allcours.php" class="hover:text-blue-500">Cours</a></li>
+                <li><a href="../home/index" class="hover:text-blue-500">Accueil</a></li>
+                <li><a href="#" class="hover:text-blue-500">Cours</a></li>
                 <?php 
     if(isset($_SESSION['user_id'])){
             ?>
-                <li><a href="mescours.php" class="hover:text-blue-500">Mes Cours</a></li>
+                <li><a href="mesCours" class="hover:text-blue-500">Mes Cours</a></li>
                 <?php } ?>
             </ul>
             <?php 
@@ -105,7 +95,7 @@ $totalPages = ceil($totalCourses / $coursesPerPage); // Calcul du nombre total d
             ?>
             <div class="flex justify-center">
                 <span><?php if(isset($_SESSION['user_name'])){echo $_SESSION['user_name'];}?></span>
-                <form action="logout.php" method="POST">
+                <form action="../home/logout" method="POST">
                     <button type="submit" name="submit"
                         class="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
                         Déconnexion
@@ -126,7 +116,7 @@ $totalPages = ceil($totalCourses / $coursesPerPage); // Calcul du nombre total d
                     ✕
                 </button>
                 <h2 class="text-3xl font-extrabold text-blue-600 mb-6 text-center">Connexion</h2>
-                <form Action="login.php" method="POST">
+                <form Action="../home/login" method="POST">
                     <div class="mb-6">
                         <label class="block text-gray-700 font-medium mb-2">Adresse Email</label>
                         <input type="email" name="email" placeholder="Entrez votre email"
@@ -157,7 +147,7 @@ $totalPages = ceil($totalCourses / $coursesPerPage); // Calcul du nombre total d
                     ✕
                 </button>
                 <h2 class="text-3xl font-extrabold text-green-600 mb-6 text-center">Inscription</h2>
-                <form Action="register.php" method="POST">
+                <form Action="../home/register" method="POST">
                     <div class="mb-6">
                         <label class="block text-gray-700 font-medium mb-2">Nom </label>
                         <input type="text" name="nom" placeholder="Entrez votre nom"
@@ -244,7 +234,7 @@ $totalPages = ceil($totalCourses / $coursesPerPage); // Calcul du nombre total d
                             Type: <?php echo ucfirst($course['type']); ?>
                         </span>
                         <?php if($notVisiteur): ?>
-                        <a href="cours.php?id=<?php echo $course['id_course']; ?>"
+                        <a href="cours/<?php echo $course['id_course']; ?>"
                             class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                             Voir le cours
                         </a>

@@ -1,6 +1,6 @@
 <?php 
     require_once('Utilisateur.php');
-    require_once('db.php');
+    // require_once('db.php');
     require_once("fileUploader.php");
     require_once("Tag.php");
 
